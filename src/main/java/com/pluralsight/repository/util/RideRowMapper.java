@@ -1,4 +1,4 @@
-package com.pluralsight.util;
+package com.pluralsight.repository.util;
 
 import com.pluralsight.model.Ride;
 import org.springframework.jdbc.core.RowMapper;

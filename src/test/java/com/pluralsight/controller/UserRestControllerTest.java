@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-public class UserControllerTest {
+public class UserRestControllerTest {
 
     @Test(timeout = 3000)
     public void testCreateUser() {
@@ -61,6 +61,24 @@ public class UserControllerTest {
         restTemplate.put("http://localhost:8080/ride_tracker/user", user);
 
         System.out.println("User age after update: " + user.getAge());
+    }
+
+    @Test(timeout = 3000)
+    public void testBatchUpdate() {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getForObject("http://localhost:8080/ride_tracker/batchuser", Object.class);
+    }
+
+    @Test(timeout = 3000)
+    public void testDelete() {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete("http://localhost:8080/ride_tracker/user/delete/3");
+    }
+
+    @Test(timeout = 3000)
+    public void testException() {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getForObject("http://localhost:8080/ride_tracker/user/test", User.class);
     }
 
 }

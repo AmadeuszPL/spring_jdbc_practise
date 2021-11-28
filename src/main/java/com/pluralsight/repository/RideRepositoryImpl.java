@@ -1,6 +1,6 @@
 package com.pluralsight.repository;
 
-import com.pluralsight.util.RideRowMapper;
+import com.pluralsight.repository.util.RideRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
@@ -63,6 +63,16 @@ public class RideRepositoryImpl implements RideRepository {
     }
 
     @Override
+    public void updateRides(List<Object[]> pairs) {
+        jdbcTemplate.batchUpdate("UPDATE ride SET ride_date = ? WHERE id = ?", pairs);
+    }
+
+    @Override
+    public void deleteRide(Integer id) {
+        jdbcTemplate.update("DELETE FROM ride WHERE id = ?", id);
+    }
+
+    @Override
     public List<Ride> getRides() {
 
 /*		Ride ride = new Ride();
@@ -72,5 +82,7 @@ public class RideRepositoryImpl implements RideRepository {
 		rides.add(ride);*/
         return jdbcTemplate.query("SELECT * FROM ride", new RideRowMapper());
     }
+
+
 
 }

@@ -14,4 +14,10 @@ public interface UserRepository {
 
     User updateUser(User user);
 
+    void batch(List<Object[]> pairs);
+
+    void deleteUser(Integer id);
+
+    void updateUsers(List<Object[]> pairs);
+
 }

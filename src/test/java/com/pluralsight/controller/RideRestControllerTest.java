@@ -11,14 +11,14 @@ import com.pluralsight.model.Ride;
 
 import org.junit.Test;
 
-public class RestControllerTest {
+public class RideRestControllerTest {
 
     @Test(timeout = 3000)
     public void testCreateRide() {
         RestTemplate restTemplate = new RestTemplate();
 
         Ride ride = new Ride();
-        ride.setName("HeyTestMe Trail Ride");
+        ride.setName("HeyTestMe Trail Ride XXX");
         ride.setDuration(33);
 
 
@@ -64,6 +64,24 @@ public class RestControllerTest {
         restTemplate.put("http://localhost:8080/ride_tracker/ride/", ride);
 
         System.out.println("Updated ride duration: " + ride.getDuration());
+    }
+
+    @Test(timeout = 3000)
+    public void testBatchUpdate() {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getForObject("http://localhost:8080/ride_tracker/batch", Object.class);
+    }
+
+    @Test(timeout = 3000)
+    public void testDelete() {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete("http://localhost:8080/ride_tracker/ride/delete/7");
+    }
+
+    @Test(timeout = 3000)
+    public void testException() {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getForObject("http://localhost:8080/ride_tracker/ride/test", Ride.class);
     }
 
 }

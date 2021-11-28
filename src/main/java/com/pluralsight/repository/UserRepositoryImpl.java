@@ -1,9 +1,10 @@
 package com.pluralsight.repository;
 
-import com.pluralsight.util.UserRowMapper;
+import com.pluralsight.repository.util.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -12,7 +13,9 @@ import com.pluralsight.model.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository("userRepository")
 public class UserRepositoryImpl implements UserRepository {
@@ -57,6 +60,27 @@ public class UserRepositoryImpl implements UserRepository {
                 "email = ? WHERE id = ?", user.getFirstName(), user.getLastName(),
                 user.getAge(), user.getEmail(), user.getId());
         return user;
+    }
+
+    @Override
+    public void batch(List<Object[]> pairs) {
+        jdbcTemplate.batchUpdate("UPDATE users SET localization = ? WHERE id = ?", pairs);
+    }
+
+    @Override
+    public void deleteUser(Integer id) {
+        NamedParameterJdbcTemplate namedTemplate =
+                                new NamedParameterJdbcTemplate(jdbcTemplate);
+
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("id", id);
+
+        namedTemplate.update("DELETE FROM users WHERE id = :id", paramMap);
+    }
+
+    @Override
+    public void updateUsers(List<Object[]> pairs) {
+        jdbcTemplate.batchUpdate("UPDATE user SET localization = ? WHERE id = ?", pairs);
     }
 
     @Override

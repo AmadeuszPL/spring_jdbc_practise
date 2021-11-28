@@ -14,4 +14,8 @@ public interface UserService {
 
     User updateUser(User user);
 
+    void batch();
+
+    void deleteUser(Integer id);
+
 }

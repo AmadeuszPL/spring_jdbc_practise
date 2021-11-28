@@ -1,11 +1,14 @@
 package com.pluralsight.service;
 
 import com.pluralsight.model.Ride;
-import com.pluralsight.model.User;
 import com.pluralsight.repository.RideRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service("rideService")
@@ -32,6 +35,29 @@ public class RideServiceImpl implements RideService {
     @Override
     public Ride updateRide(Ride ride) {
         return rideRepository.updateRide(ride);
+    }
+
+    @Override
+    @Transactional
+    public void batch() {
+        List<Ride> rides = rideRepository.getRides();
+
+        List<Object[]> pairs = new ArrayList<>();
+
+        for (Ride ride:rides) {
+            Object[] tmp =  {new Date(), ride.getId()};
+            pairs.add(tmp);
+        }
+
+        rideRepository.updateRides(pairs);
+
+        throw new DataAccessException("Testing Exception Handling in batch service") {
+        };
+    }
+
+    @Override
+    public void deleteRide(Integer id) {
+        rideRepository.deleteRide(id);
     }
 
 }
